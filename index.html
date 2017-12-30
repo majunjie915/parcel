@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="format-detection" content="email=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>search</title>
+</head>
+<body>
+  <section class="wrapper">
+    <section class="search-index-brief">
+      <header>
+        <div class="date">11月17日&nbsp;周五</div>
+        <div class="logo"><img src="//s.autoimg.cn/mass/v2/img/search-index-logo.png"></div>
+        <div class="trigger">
+          <div class="assist">
+            <a href="javascript:void(0);" id="searchCol"><span class="channel">综合</span>请输入<i class="iconfont icon-search"></i></a>
+          </div>
+        </div>
+      </header>
+      <ul class="activity" id="activity">
+       
+      </ul>
+    </section>
+
+    <section class="search-index-info">
+      <header class="tab-scroll" data-role="tabSwitch" data-tab-active="1" data-tab-display="auto">
+        <div class="assist">
+          <div class="scroll" data-tab-scroll>
+            <div class="anchor" data-role="tab"></div>
+          </div>
+        </div>
+        <i class="overlay"></i>
+      </header>
+      <div class="listing" id="listing">
+        
+      </div>
+    </section>
+    <section class="search-index-related fn-mt fn-mb">
+      <div class="title"><span class="item">其他人都在搜</span></div>
+      <ul id="othersSearch">
+        
+      </ul>
+    </section>
+
+    <!--返顶-->
+    <i class="iconfont icon-backtop fn-hide" data-role="backTop"></i>
+    <!--end返顶-->
+  </section>
+
+  <script type="text/tmpl" id="activityTemp">
+    {{each activity as value i}}
+      <li>
+        <a href="{{ insidebrowser('https://sou.m.autohome.com.cn/zonghe?data-entry='+value.dataEntry+'&q='+value.q+'&from_type='+value.fromType) }}">
+          <div class="assist">
+            {{if value.tag}}
+              <em>{{value.tag}}</em>
+            {{/if}}
+            <span>{{value.title}}</span>
+          </div>
+        </a>
+      </li>
+    {{/each}}
+  </script>
+
+  <script type="text/tmpl" id="anchorTemp">
+    {{each tabItems as value i}}
+      <span class="item {{if i === 0}} activate {{/if}}">{{value.name}}</span>
+    {{/each}}
+  </script>
+
+  <script type="text/tmpl" id="listingTemp">
+    {{each listing as $value i}}
+      {{if $value.type === 'topic'}}
+        <div class="puretext" data-type="topic">
+          <a href="{{ topicDetail({
+            pageid: $value.data.id,
+            bbsid: 3074,
+            bbstype: 'c',
+            replyCounts: 535,
+            title: $value.data.title,
+            link: '//club.m.autohome.com.cn/bbs/thread-c-3074-53664250-1.html'
+          }) }}">
+            <h4>{{$value.data.title}}</h4>
+            <p>{{$value.data.desc}}</p>
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+            <span class="word">{{$value.data.text}}</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'onlyArticle'}}
+        <div class="puretext" data-type="article">
+            <a href="{{ articleDetail({
+              articlefromtype: $value.data.articlefromtype,
+              newsid: $value.data.id
+            }) }}">
+              <h4>{{$value.data.title}}</h4>
+              <p>{{$value.data.desc}}</p>
+              <em class="mark-type">{{$value.data.type}}</em>
+              <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+              <span class="word">{{$value.data.type}}</span>
+            </a>
+          </div>
+      {{/if}}
+      {{if $value.type === 'picArticle'}}
+        <div class="thumb-43" data-type="article">
+            <a href="{{ articleDetail({
+              articlefromtype: $value.data.articlefromtype,
+              newsid: $value.data.id,
+              link: '//m.autohome.com.cn/tuning/201502/862706.html'
+            }) }}">
+              <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+              <h4>{{$value.data.title}}</h4>
+              <em class="mark-type">{{$value.data.type}}</em>
+              <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+              <span class="word">{{$value.data.type}}</span>
+            </a>
+          </div>
+      {{/if}}
+      {{if $value.type === 'chejiahao'}}
+        <div class="thumb-43" data-type="chejiahao">
+            <a href="{{ chejiahao({
+              infoid: $value.data.id,
+              infotype: $value.data.infotype
+            }) }}">
+              <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+              <h4>{{$value.data.title}}</h4>
+              <em class="mark-type">{{$value.data.type}}</em>
+              <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+              <span class="word">{{$value.data.type}}</span>
+            </a>
+          </div>
+      {{/if}}
+      {{if $value.type === 'video'}}
+        <div class="thumb-43" data-type="video">
+            <a href="{{ videoDetail({newsid:$value.data.id}) }}">
+              <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+              <span class="long">{{$value.data.long}}</span>
+              <h4>{{$value.data.title}}</h4>
+              <em class="mark-type">{{$value.data.type}}</em>
+              <span class="play"><i class="iconfont icon-play"></i>{{$value.data.playNum}}</span>
+            </a>
+          </div>
+      {{/if}}
+      {{if $value.type === '1111'}}
+        <div class="thumb-43">
+          <a href="javascript:;">
+            <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+            <h4>{{$value.data.title}}</h4>
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="comment"><i class="iconfont icon-comment"></i>28</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'car_mall'}}
+        <div class="thumb-43 type-mall" data-type="car_mall">
+          <a href="{{ car_mall({
+            coupon_channel: $value.data.coupon_channel,
+            object_id: $value.data.object_id,
+            source: $value.data.source,
+            id: $value.data.id
+          }) }}">
+            <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+            <h4>{{$value.data.title}}</h4>
+            <div class="price">
+              <strong><dfn>&yen;</dfn>{{$value.data.price}}</strong>
+              <span class="deduction">抵扣<strong>{{$value.data.deduction}}</strong>万</span>
+            </div>
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="word">{{$value.data.text}}</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'second_hand_car'}}
+        <div class="thumb-43 type-2sc" data-type="second_hand_car">
+          <a href="{{insidebrowser('%2F%2Fm.che168.com%2Fapp%2Fbeijing%2Fdazhong%2Fsuteng%2Fa_msdgscncgpi1ltocspex24560686%2F%3Fsourcename%3Dmainapp%26safe%3D0%23pvareaid%3D104082')}}">
+            <img src="{{$value.data.picUrl}}">
+            <h4>{{$value.data.title}}</h4>
+            <div class="price">
+              <strong><dfn>&yen;</dfn>{{$value.data.price}}</strong>
+              <span class="mileage">2万公里&nbsp;/&nbsp;{{$value.data.years}}</span>
+            </div>
+            <em class="mark-type">二手车</em>
+            <span class="comment"><i class="iconfont icon-comment"></i>28</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'reputation'}}
+        <div class="type-wom" type="reputation">
+          <a href="{{ reputationDetail({}) }}">
+            <h4>{{$value.data.title}}</h4>
+            <div class="assist">
+              <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+              <div class="score">综合评分：<strong>{{$value.data.score}}<em>分</em></strong></div>
+              <div class="rank">排名{{$value.data.rank}}</div>
+              <div class="positive">
+                <span>动力输出充沛</span>
+                <span>空间大</span>
+                <span>操控好</span>
+                <span>综合油耗相当不错</span>
+                <span>储物空间比较少</span>
+              </div>
+              <div class="negative">
+                <span>动力输出充沛</span>
+                <span>空间大</span>
+                <span>操控好</span>
+                <span>综合油耗相当不错</span>
+                <span>储物空间比较少</span>
+              </div>
+            </div>
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="word">{{$value.data.text}}</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'live'}}
+        <div class="type-live" data-type="live">
+          <a href="{{ live({
+            id: $value.data.id,
+            live_type: $value.data.live_type,
+            publishStatus: $value.data.publishStatus
+        }) }}">
+            <h4>{{$value.data.title}}</h4>
+            <div class="assist">
+              <img src="{{ConvartImage($value.data.picUrl,'224x168_f41_')}}">
+              <div class="brief">
+                主播：{{$value.data.brief}}<br>参与人数：{{$value.data.joinNum}}万人
+              </div>
+              <em class="mark-type">{{$value.data.type}}</em>
+              <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+            </div>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'display'}}
+        <div class="full-169" data-type="display">
+          <a href="{{ insidebrowser('https://sou.m.autohome.com.cn/h5/comparison/index.html?series_id_1=0&series_name_1=0&series_id_2=0&series_name_2=0&from=app_search') }}">
+            <h4>{{$value.data.title}}</h4>
+            <img src="{{$value.data.picUrl}}">
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+          </a>
+        </div>
+      {{/if}}
+      {{if $value.type === 'youji'}}
+        <div class="album-43" data-type="youji">
+          <a href="{{ youji({id: 33513}) }}">
+            <h4>{{$value.data.title}}</h4>
+            <ul class="album">
+              {{each $value.data.picUrl as val i}}
+                <li><div class="assist"><img src="{{ConvartImage(val,'224x168_f41_')}}"></div></li>
+              {{/each}}
+            </ul>
+            <em class="mark-type">{{$value.data.type}}</em>
+            <span class="comment"><i class="iconfont icon-comment"></i>{{$value.data.comment}}</span>
+            <span class="view"><i class="iconfont icon-eye"></i>{{$value.data.view}}万</span>
+          </a>
+        </div>
+      {{/if}}
+    {{/each}}
+  </script>
+
+  <script type="text/tmpl" id="othersSearchTemp">
+    {{each othersSearch as value i}}
+      <li><a href="searchOperating.html?q={{value.id}}">{{value.name}}</a></li>
+    {{/each}}
+  </script>
+
+
+  <script src="//s.autoimg.cn/mass/zepto-1.2.min.js"></script>
+  <script src="//s.autoimg.cn/mass/mass-2.1.26.min.js"></script>
+  <script src="src/index.js"></script>
+
+</body>
+</html>
